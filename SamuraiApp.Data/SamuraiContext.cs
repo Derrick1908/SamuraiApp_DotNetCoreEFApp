@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using SamuraiApp.Domain;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SamuraiApp.Data
 {
@@ -13,9 +11,21 @@ namespace SamuraiApp.Data
         public DbSet<Clan> Clans { get; set; }
         public DbSet<Battle> Battles { get; set; }      //Added a Table called Battles so that we can directly interact with it if needed in the Future.
 
+        public static readonly ILoggerFactory ConsoleLoggerFactory
+            = LoggerFactory.Create(builder =>                                   //Adds a Logger to the Context Class
+            {
+                builder
+                .AddFilter((category, level) =>
+                category == DbLoggerCategory.Database.Command.Name              //Filter only the Database Commands
+                && level == LogLevel.Information)                               //and the Level of Detail needed sp we select only Basic Level of Log Level and nothing more.
+                .AddConsole();
+            });
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(
+            optionsBuilder
+                .UseLoggerFactory(ConsoleLoggerFactory)
+                .EnableSensitiveDataLogging()           //This will display also sensitive data on the Log, which by default is not logged (Incoming Parameter Values)
+                .UseSqlServer(
                 "Data Source = (localdb)\\MSSQLLocalDB; Initial Catalog = SamuraiAppData");
         }
 
