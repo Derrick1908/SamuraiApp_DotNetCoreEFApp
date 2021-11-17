@@ -59,7 +59,15 @@ namespace ConsoleApp
             GetSamuraiWithClan();
             GetClanWithSamurais(); */
             #endregion
-            
+
+            //QuerySamuraiBattleStats();
+            //QueryUsingRawSql();
+            //QueryUsingRawlSqlWithInterpolation();
+            //DangerQueryUsingRawlSqlWithInterpolation();
+            //QueryUsingRawSqlStoredProcParameters();
+            //InterpolatedQueryUsingRawSqlStoredProcParameters();
+            ExecuteSomeRawSql();
+
             Console.Write("Press any Key...");
             Console.ReadKey();
         }
@@ -445,5 +453,66 @@ namespace ConsoleApp
         }
 
         #endregion
+
+        private static void QuerySamuraiBattleStats()
+        {
+            //var stats = _context.SamuraiBattleStats.ToList();            
+            var firstStat = _context.SamuraiBattleStats.FirstOrDefault();
+            var sampsonStat = _context.SamuraiBattleStats
+                              .Where(s => s.Name == "SampsonSan").FirstOrDefault();
+
+            //var findone = _context.SamuraiBattleStats.Find(2);   //Makes no Sense, Since this is a Keyless Entity and Find, whick works based on a Key, wont work here
+                                                        //No Compile Time Error, Since its a Valid Method of DbSet; Run Time Error
+        }
+
+        private static void QueryUsingRawSql()
+        {
+            var samurais = _context.Samurais.FromSqlRaw("Select * From Samurais").ToList();
+
+            var samurais2 = _context.Samurais.FromSqlRaw("Select Id, Name, ClanId From Samurais")
+                                    .Include(s => s.Quotes).ToList();
+            
+            //var samurais = _context.Samurais.FromSqlRaw("Select Name From Samurais").ToList();                                //Not Allowed as you have to specify all the Properties of the Entity
+            //var samurais = _context.Samurais.FromSqlRaw("Select Id, Name, Quotes, Clan, SamuraiBattles, Horse From Samurais").ToList();      //Cannot Select Navigation Properties in Raw SQL
+        }
+
+        private static void QueryUsingRawlSqlWithInterpolation()
+        {
+            string name = "Kikuchio";
+            var samurais = _context.Samurais
+                .FromSqlInterpolated($"Select * From Samurais Where Name = {name}")
+                .ToList();
+        }
+
+        private static void DangerQueryUsingRawlSqlWithInterpolation()      //In this Method we try to send an Interpolated String through the Raw SQL Method
+        {                                           //Shoudl not be used as it is susceptible to SQL Injection Attacks.
+            string name = "Kikuchio";
+            var samurais = _context.Samurais
+                .FromSqlRaw($"Select * From Samurais Where Name = '{name}'")
+                .ToList();
+        }
+
+        private static void QueryUsingRawSqlStoredProcParameters()
+        {
+            var text = "Happy";
+            var samurais = _context.Samurais.FromSqlRaw(
+                "EXEC dbo.SamuraisWhoSaidAWord {0}", text).ToList();
+        }
+
+        private static void InterpolatedQueryUsingRawSqlStoredProcParameters()
+        {
+            var text = "Happy";
+            var samurais = _context.Samurais.FromSqlInterpolated(
+                $"EXEC dbo.SamuraisWhoSaidAWord {text}").ToList();
+        }
+
+        private static void ExecuteSomeRawSql()
+        {
+            var samuraiId = 22;
+            var x = _context.Database.ExecuteSqlRaw("EXEC DeleteQuotesForSamurai {0}", samuraiId);
+
+            samuraiId = 31;
+            var y = _context.Database.ExecuteSqlRaw($"EXEC DeleteQuotesForSamurai {samuraiId}");
+        }
     }
 }
