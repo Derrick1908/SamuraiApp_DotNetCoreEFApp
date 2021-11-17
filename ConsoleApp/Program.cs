@@ -31,31 +31,35 @@ namespace ConsoleApp
             QueryAndUpdateBattle_Disconnected(); */
             #endregion
 
-            //InsertNewSamuraiWithAQuote();
-            //InsertNewSamuraiWithManyQuotes();
-            //AddQuoteToExistingSamuraiWhileTracked();
-            //AddQuoteToExistingSamuraiNotTracked(2);
-            //AddQuoteToExistingSamuraiNotTracked_Easy(2);
-            //EagerLoadSamuraiWithQuotes();
-            //ProjectSomeProperties();
-            //ProjectSamuraiWithQuotes();
-            //ExplicitLoadQuotes();
-            //FilteringWithRelatedData();
-            //ModifyingRelatedDataWhenTracked();
-            //ModifyingRealtedDataWhenNotTracked();
-            //JoinBattleAndSamurai();
-            //EnlistSamuraiIntoABattle();
-            //GetSamuraiWithBattles();
-            //RemoveJoinBetweenSamuraiAndBattleSimple();
-            //AddNewSamuraiWithHorse();
-            //AddNewHorseToSamuraiUsingId();
-            //AddNewHorseToSamuraiObject();
-            //AddNewHorseToDisconnectedSamuraiObject();
-            //ReplaceHorse();
-            //GetSamuraisWithHorse();
-            //GetHorsewithSamurai();
+            #region Eager Loading (Include) / Projecting (Select) / Explicit Loading (Load) of Related Data / Filtering and Sorting Related Data
+            /*
+            InsertNewSamuraiWithAQuote();
+            InsertNewSamuraiWithManyQuotes();
+            AddQuoteToExistingSamuraiWhileTracked();
+            AddQuoteToExistingSamuraiNotTracked(2);
+            AddQuoteToExistingSamuraiNotTracked_Easy(2);
+            EagerLoadSamuraiWithQuotes();
+            ProjectSomeProperties();
+            ProjectSamuraiWithQuotes();
+            ExplicitLoadQuotes();
+            FilteringWithRelatedData();
+            ModifyingRelatedDataWhenTracked();
+            ModifyingRealtedDataWhenNotTracked();
+            JoinBattleAndSamurai();
+            EnlistSamuraiIntoABattle();
+            GetSamuraiWithBattles();
+            RemoveJoinBetweenSamuraiAndBattleSimple();
+            AddNewSamuraiWithHorse();
+            AddNewHorseToSamuraiUsingId();
+            AddNewHorseToSamuraiObject();
+            AddNewHorseToDisconnectedSamuraiObject();
+            ReplaceHorse();
+            GetSamuraisWithHorse();
+            GetHorsewithSamurai();
             GetSamuraiWithClan();
-            GetClanWithSamurais();
+            GetClanWithSamurais(); */
+            #endregion
+            
             Console.Write("Press any Key...");
             Console.ReadKey();
         }
@@ -175,6 +179,8 @@ namespace ConsoleApp
         }
 
         #endregion
+
+        #region Eager Loading (Include) / Projecting (Select) / Explicit Loading (Load) of Related Data / Filtering and Sorting Related Data
         private static void InsertNewSamuraiWithAQuote()
         {
             var samurai = new Samurai
@@ -437,5 +443,7 @@ namespace ConsoleApp
             var clan = _context.Clans.Find(1);
             var samuraisForClan = _context.Samurais.Where(s => s.Clan.Id == 1).ToList();
         }
+
+        #endregion
     }
 }
