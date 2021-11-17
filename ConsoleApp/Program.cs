@@ -60,14 +60,18 @@ namespace ConsoleApp
             GetClanWithSamurais(); */
             #endregion
 
-            //QuerySamuraiBattleStats();
-            //QueryUsingRawSql();
-            //QueryUsingRawlSqlWithInterpolation();
-            //DangerQueryUsingRawlSqlWithInterpolation();
-            //QueryUsingRawSqlStoredProcParameters();
-            //InterpolatedQueryUsingRawSqlStoredProcParameters();
+            #region Query using View / Stored Procedure / Keyless Entities / Raw SQL (Interpolated) / Database Execute Raw SQL
+            /*
+            QuerySamuraiBattleStats();
+            QueryUsingRawSql();
+            QueryUsingRawlSqlWithInterpolation();
+            DangerQueryUsingRawlSqlWithInterpolation();
+            QueryUsingRawSqlStoredProcParameters();
+            InterpolatedQueryUsingRawSqlStoredProcParameters();
             ExecuteSomeRawSql();
-
+            */
+            #endregion
+            
             Console.Write("Press any Key...");
             Console.ReadKey();
         }
@@ -454,6 +458,7 @@ namespace ConsoleApp
 
         #endregion
 
+        #region Query using View / Stored Procedure / Keyless Entities / Raw SQL (Interpolated) / Database Execute Raw SQL
         private static void QuerySamuraiBattleStats()
         {
             //var stats = _context.SamuraiBattleStats.ToList();            
@@ -514,5 +519,6 @@ namespace ConsoleApp
             samuraiId = 31;
             var y = _context.Database.ExecuteSqlRaw($"EXEC DeleteQuotesForSamurai {samuraiId}");
         }
+        #endregion
     }
 }
